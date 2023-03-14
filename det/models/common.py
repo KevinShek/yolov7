@@ -413,7 +413,10 @@ class DetectMultiBackend(nn.Module):
                 stride, names = int(d['stride']), d['names']
         elif dnn:  # ONNX OpenCV DNN
             LOGGER.info(f'Loading {w} for ONNX OpenCV DNN inference...')
-            check_requirements(('opencv-python>=4.5.4',))
+            # check_requirements(('opencv-python>=4.5.4',))
+            if device == "npu":
+                model.setPreferableBackend(cv2.dnn.DNN_BACKEND_TIMVX)
+                model.setPreferableTarget(cv2.dnn.DNN_TARGET_NPU)
             net = cv2.dnn.readNetFromONNX(w)
         elif onnx:  # ONNX Runtime
             LOGGER.info(f'Loading {w} for ONNX Runtime inference...')
