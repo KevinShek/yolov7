@@ -375,7 +375,7 @@ class Concat(nn.Module):
 
 class DetectMultiBackend(nn.Module):
     # YOLOv5 MultiBackend class for python inference on various backends
-    def __init__(self, weights='yolov5s.pt', device=torch.device('cpu'), dnn=False, data=None, fp16=False, fuse=True):
+    def __init__(self, weights='yolov5s.pt', device=torch.device('cpu'), dnn=False, data=None, fp16=False, fuse=True, npu=False):
         # Usage:
         #   PyTorch:              weights = *.pt
         #   TorchScript:                    *.torchscript
@@ -414,7 +414,7 @@ class DetectMultiBackend(nn.Module):
         elif dnn:  # ONNX OpenCV DNN
             LOGGER.info(f'Loading {w} for ONNX OpenCV DNN inference...')
             # check_requirements(('opencv-python>=4.5.4',))
-            if device == "npu":
+            if npu:
                 model.setPreferableBackend(cv2.dnn.DNN_BACKEND_TIMVX)
                 model.setPreferableTarget(cv2.dnn.DNN_TARGET_NPU)
             net = cv2.dnn.readNetFromONNX(w)
