@@ -416,6 +416,7 @@ class DetectMultiBackend(nn.Module):
             # check_requirements(('opencv-python>=4.5.4',))
             net = cv2.dnn.readNetFromONNX(w)
             if npu:
+                print("Using NPU Processor")
                 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_TIMVX)
                 net.setPreferableTarget(cv2.dnn.DNN_TARGET_NPU)
         elif onnx:  # ONNX Runtime
