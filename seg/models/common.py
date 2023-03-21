@@ -552,7 +552,7 @@ class DetectMultiBackend(nn.Module):
         elif self.dnn:  # ONNX OpenCV DNN
             im = im.cpu().numpy()  # torch to numpy
             self.net.setInput(im)
-            y = self.net.forward()
+            y = self.net.forward(self.net.getUnconnectedOutLayersNames())
         elif self.onnx:  # ONNX Runtime
             im = im.cpu().numpy()  # torch to numpy
             y = self.session.run(self.output_names, {self.session.get_inputs()[0].name: im})
